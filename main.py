@@ -41,7 +41,7 @@ class Player(pygame.sprite.Sprite):
 		self.image = pygame.transform.flip(self.image, True, False)
 		self.rect = self.image.get_rect(center = (self.x, self.y))
 	def accend(self):
-		# self.image = pygame.transform.rotate(self.image, 1)
+		# self.image = pygame.transform.rotate(self.image, 90)
 		self.rect.y -= self.speed
 	def descend(self):
 		# self.image = pygame.transform.rotate(self.image, -1)
@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
 		if pygame.sprite.collide_rect(self, bomb):
 			# self.image = pygame.image.load("boom.jpg").convert_alpha()
 			self.image = pygame.transform.scale(pygame.image.load("boom.jpg").convert_alpha(), (100, 100))
+			pygame.time.wait(100) # not working - it just goes slo-mo
 			self.kill()
 
 class Bomb(pygame.sprite.Sprite):
@@ -131,6 +132,7 @@ while player.alive():
 			pygame.quit()
 			exit()
 	
+	player.collide()
 	pygame.sprite.spritecollide(player, people, True)
 
 	for b in background:
@@ -140,15 +142,13 @@ while player.alive():
 		x.move()
 		if x.x < 0:
 			x.relocate()
-
-	player.collide()
 	
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_UP]:
 		player.accend()
 	if keys[pygame.K_DOWN]:
 		player.descend()
-	
+
 	all_sprites.draw(screen)
 
 	pygame.display.update()
